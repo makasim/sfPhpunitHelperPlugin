@@ -15,8 +15,31 @@ abstract class sfBasePhpunitHelper
    */
   protected $_testCase;
   
-  public function __construct(PHPUnit_Extensions_SeleniumTestCase $testCase)
+  /**
+   * 
+   * @param PHPUnit_Extensions_SeleniumTestCase $testCase
+   * 
+   * @return sfBasePhpunitHelper
+   */
+  public function setTestCase(PHPUnit_Extensions_SeleniumTestCase $testCase)
   {
     $this->_testCase = $testCase;
+    
+    return $this;
+  }
+  
+  /**
+   * 
+   * @throws Exception
+   * 
+   * @return PHPUnit_Extensions_SeleniumTestCase
+   */
+  public function getTestCase()
+  {
+    if (!$this->_testCase) {
+      throw new Exception('The test case must be set before any tries to access it');
+    }
+    
+    return $this->_testCase;
   }
 }

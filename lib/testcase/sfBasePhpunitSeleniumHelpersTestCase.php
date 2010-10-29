@@ -24,7 +24,8 @@ abstract class sfBasePhpunitSeleniumHelpersTestCase extends sfBasePhpunitSeleniu
    */
   public function helperRegister($name, sfBasePhpunitHelper $helper)
   {
-    $this->_helpers[$name] = $helper;
+    $helper->setTestCase($this);
+    $this->_helpers[sfInflector::underscore($name)] = $helper;
     
     return $this;
   }
