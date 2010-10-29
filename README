@@ -1,0 +1,71 @@
+The plugin will provide a functionallity like shown bellow:
+
+Helpers allow write test much as domain logic nor selenium commands.
+
+Example 1:
+
+    class PublicationFunctionTestCase extends BaseSeleniumTestCase
+      implements sfPhpunitFixturePropelAggregator
+    {
+      public function testNewItem()
+      {
+        $this->backofficeHelper()
+          ->loginAsSuperadmin()
+          ->goPublications();
+    
+        $this->gridHelper()
+          ->assertTotalRows(5)
+          ->clickAtNewItem();
+    
+        $this->assertTextPresent('New Publication');
+    
+        $this->formHelper()
+          ->type('publication', 'title', 'title_new')
+          ->select('publication', 'published_from_month', 'July')
+          ->select('publication', 'published_from_day', '01')
+          ->select('publication', 'published_from_year', '2010')
+          ->type('publication', 'author', 'test-author')
+          ->type('publication', 'manager', 'test-manager')
+          ->type('publication', 'publisher', 'test-publisher')
+          ->type('publication', 'ISBN', '1234-4321-1234')
+          ->type('publication', 'cover_file',
+            $this->fixture()->getFileCommonAsRemote('publicationCover.gif'))
+    
+          ->clickAtSave()
+          ->assertSavedSuccess();
+    
+        $this->assertTextPresent('Edit Publication');
+    
+        $this->formHelper()
+          ->assertImageExist('publication', 'cover_file')
+          ->clickAtCancel();
+    
+        $this->gridHelper()
+          ->assertTotalRows(6)
+          ->assertItemFieldValue(6, 'title', 'title_new')
+          ->assertItemFieldValue(6, 'author', 'test-author');
+      }
+    }
+    
+Example 2:
+
+    class AuthenticationTestCase extends FrontendBaseTestCase
+    {
+      public function testVisitorCanRegisterAndBecomeAUser()
+      {
+        // selenium command to register user and asume that app send a mail to user gmail account.
+        // then we can check that the mail was actually sent.
+    
+        $this->gmailHelper()
+          ->open()
+          ->loginNewUser()
+          ->assertNewMail('JJ Threads admin', 'Please verify your account')
+          ->clickAtMailWithSubject('glob:Please verify your account*');
+        
+        $this->assertTrue($this->isTextPresent("glob:Thanks for applying for an account with*To prevent abuse of the site, we require that you activate your account by clicking on the following link:"));
+    
+        $this->click('link=glob:*/confirm/'.$user->getProfile()->getValidate());
+        
+        // ... other actions
+      }
+    }
