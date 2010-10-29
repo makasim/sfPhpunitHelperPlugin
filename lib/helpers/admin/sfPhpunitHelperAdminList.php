@@ -58,7 +58,7 @@ class sfPhpunitHelperAdminList extends sfBasePhpunitHelperAdmin
   {
     $this->_testCase->clickAndWait(
       "//tbody/tr[{$rowNumber}]" . 
-      "/td[@class='sf_admin_{$cellType} sf_admin_list_td_{$cellName}'] a");
+      "/td[@class='sf_admin_{$cellType} sf_admin_list_td_{$cellName}']/a");
   }
   
   /**
