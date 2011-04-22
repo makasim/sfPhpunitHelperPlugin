@@ -59,7 +59,7 @@ Example 2:
         $this->gmailHelper()
           ->open()
           ->loginNewUser()
-          ->assertNewMail('JJ Threads admin', 'Please verify your account')
+          ->assertNewMail('admin mail', 'Please verify your account')
           ->clickAtMailWithSubject('glob:Please verify your account*');
         
         $this->assertTrue($this->isTextPresent("glob:Thanks for applying for an account with*To prevent abuse of the site, we require that you activate your account by clicking on the following link:"));
